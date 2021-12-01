@@ -14,8 +14,8 @@
   - [Examples](#examples)
     - [`main.tf`](#maintf)
     - [`terraform.tfvars.json`](#terraformtfvarsjson)
-      - [definition_variables](#definition_variables-1)
-      - [logging_configuration](#logging_configuration-1)
+      - [definition_variables example](#definition_variables-example)
+      - [logging_configuration example](#logging_configuration-example)
     - [`state-machine.json`](#state-machinejson)
     - [`provider.tf`](#providertf)
     - [`variables.tf`](#variablestf)
@@ -66,7 +66,7 @@ Default:
 ```
 
 ### type
-Type of the State Machine. 
+Type of the State Machine.
 ```json
 "type": "<STANDARD or EXPRESS>"
 ```
@@ -166,14 +166,14 @@ Basic
 }
 ```
 
-#### definition_variables
+#### definition_variables example
 ```json
 {
   "test_lambda": "arn:aws:lambda:us-east-1:319244236588:function:lambda-test"
 }
 ```
 
-#### logging_configuration
+#### logging_configuration example
 Precreated destination.
 ```json
 {
