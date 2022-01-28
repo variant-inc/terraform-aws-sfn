@@ -4,6 +4,7 @@
   - [Input Variables](#input-variables)
   - [Variable definitions](#variable-definitions)
     - [name](#name)
+    - [tags](#tags)
     - [create_role](#create_role)
     - [role](#role)
     - [type](#type)
@@ -25,6 +26,7 @@
 | Name     | Type    | Default   | Example     | Notes   |
 | -------- | ------- | --------- | ----------- | ------- |
 | name | string |  | "test-sfn" |  |
+| tags | map(string) | {} | {"environment": "prod"} | |
 | create_role | bool | true | false |  |
 | role | string | "" | "arn:aws:iam::319244236588:role/service-role/test-sfn-role" | required if `create_role` is `false` |
 | type | string | "STANDARD" | "EXPRESS" |  |
@@ -40,6 +42,17 @@ Name of the state machine.
 Also used for naming role and log group if applicable.
 ```json
 "name": "<Name>"
+```
+
+### tags
+Tags for created bucket.
+```json
+"tags": {<map of tag keys and values>}
+```
+
+Default:
+```json
+"tags": {}
 ```
 
 ### create_role
@@ -134,6 +147,7 @@ module "sfn" {
   source  = "github.com/variant-inc/terrafom-aws-sfn?refs=v1
 
   name        = var.name
+  tags        = var.tags
   create_role = var.create_role
   role        = var.role
   type        = var.type
@@ -149,6 +163,9 @@ module "sfn" {
 ```json
 {
   "name": "test-sfn",
+  "tags": {
+    "environment": "prod"
+  },
   "create_role": true,
   "role": "",
   "type": "STANDARD",
