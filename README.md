@@ -144,7 +144,7 @@ Default:
 ### `main.tf`
 ```terarform
 module "sfn" {
-  source  = "github.com/variant-inc/terrafom-aws-sfn?refs=v1"
+  source  = "github.com/variant-inc/terraform-aws-sfn"
 
   name        = var.name
   tags        = var.tags
