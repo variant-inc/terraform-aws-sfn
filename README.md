@@ -6,6 +6,7 @@
     - [name](#name)
     - [tags](#tags)
     - [create_role](#create_role)
+    - [policy](#policy)
     - [role](#role)
     - [type](#type)
     - [definition_filename](#definition_filename)
@@ -28,6 +29,7 @@
 | name | string |  | "test-sfn" |  |
 | tags | map(string) | {} | {"environment": "prod"} | |
 | create_role | bool | true | false |  |
+| policy | list(any) | [] | `see below` |  |
 | role | string | "" | "arn:aws:iam::319244236588:role/service-role/test-sfn-role" | required if `create_role` is `false` |
 | type | string | "STANDARD" | "EXPRESS" |  |
 | definition_filename | string | "state-machine.json" | "my-sfn.json" |  |
@@ -64,6 +66,18 @@ Specifies should role be created with module or will there be external one provi
 Default:
 ```json
 "create_role": true
+```
+
+### policy
+Additional inline policy statements for Step Function role.
+Effective only if `create_role` is set to `true`.
+```json
+"policy": [<list of inline policies>]
+```
+
+Default:
+```json
+"policy": []
 ```
 
 ### role
@@ -149,6 +163,7 @@ module "sfn" {
   name        = var.name
   tags        = var.tags
   create_role = var.create_role
+  policy      = var.policy
   role        = var.role
   type        = var.type
 
@@ -167,6 +182,26 @@ module "sfn" {
     "environment": "prod"
   },
   "create_role": true,
+  "policy": [
+    {
+      "name": "gluejobpolicy",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect" : "Allow",
+            "Action" : [
+              "glue:StartJobRun",
+              "glue:GetJob*"
+            ],
+            "Resource" : [
+              "arn:aws:glue:us-east-1:123456789012:job/testjob"
+            ]
+          }
+        ]
+      }
+    }
+  ],
   "role": "",
   "type": "STANDARD",
   "definition_filename": "state-machine.json",

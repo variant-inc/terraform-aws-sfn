@@ -123,4 +123,13 @@ resource "aws_iam_role" "sfn" {
       })
     }
   }
+
+  dynamic "inline_policy" {
+    for_each = var.policy
+
+    content {
+      name   = lookup(inline_policy.value, "name", "")
+      policy = jsonecode(lookup(inline_policy.value, "policy", {}))
+    }
+  }
 }

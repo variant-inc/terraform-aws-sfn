@@ -15,6 +15,12 @@ variable "create_role" {
   default     = true
 }
 
+variable "policy" {
+  description = "List of additional policies for Glue Crawler role."
+  type        = list(any)
+  default     = []
+}
+
 variable "role" {
   description = "Custom role ARN used for SFN state machine."
   type        = string
