@@ -7,6 +7,7 @@
     - [tags](#tags)
     - [create_role](#create_role)
     - [policy](#policy)
+    - [managed_policies](#managed_policies)
     - [role](#role)
     - [type](#type)
     - [definition_filename](#definition_filename)
@@ -30,6 +31,7 @@
 | tags | map(string) | {} | {"environment": "prod"} | |
 | create_role | bool | true | false |  |
 | policy | list(any) | [] | `see below` |  |
+| managed_policies | list(string) | [] | `see below` |  |
 | role | string | "" | "arn:aws:iam::319244236588:role/service-role/test-sfn-role" | required if `create_role` is `false` |
 | type | string | "STANDARD" | "EXPRESS" |  |
 | definition_filename | string | "state-machine.json" | "my-sfn.json" |  |
@@ -78,6 +80,18 @@ Effective only if `create_role` is set to `true`.
 Default:
 ```json
 "policy": []
+```
+
+### managed_policies
+Additional managed policies which should be attached to auto-created role.
+Effective only if `create_role` is set to `true`.
+```json
+"managed_policies": [<list of managed policies>]
+```
+
+Default:
+```json
+"managed_policies": []
 ```
 
 ### role
@@ -162,10 +176,12 @@ module "sfn" {
 
   name        = var.name
   tags        = var.tags
-  create_role = var.create_role
-  policy      = var.policy
-  role        = var.role
   type        = var.type
+
+  create_role      = var.create_role
+  policy           = var.policy
+  managed_policies = var.managed_policies
+  role             = var.role
 
   definition_filename   = var.definition_filename
   definition_variables  = var.definition_variables
@@ -201,6 +217,9 @@ module "sfn" {
         ]
       }
     }
+  ],
+  "managed_policies": [
+    "arn:aws:iam::319244236588:policy/example-managed-policy"
   ],
   "role": "",
   "type": "STANDARD",

@@ -54,7 +54,12 @@ resource "aws_iam_role" "sfn" {
     ]
   })
 
-  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+  managed_policy_arns = concat(
+    [
+      "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+    ],
+    var.managed_policies
+  )
 
   dynamic "inline_policy" {
     for_each = var.enable_tracing ? [true] : []
