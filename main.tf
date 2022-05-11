@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_group" "group" {
-  count = lookup(var.logging_configuration, "level", "OFF") != "OFF" && length(lookup(var.logging_configuration, "log_destination", "")) == 0 && var.type == "EXPRESS" ? 1 : 0
+  count = lookup(var.logging_configuration, "level", "OFF") != "OFF" && length(lookup(var.logging_configuration, "log_destination", "")) == 0 ? 1 : 0
 
   name              = format("aws-sfn-logs-%s", var.name)
   tags              = var.tags
@@ -16,7 +16,7 @@ resource "aws_sfn_state_machine" "sfn" {
   definition = templatefile(var.definition_filename, var.definition_variables)
 
   dynamic "logging_configuration" {
-    for_each = lookup(var.logging_configuration, "level", "OFF") != "OFF" && var.type == "EXPRESS" ? [var.logging_configuration] : []
+    for_each = lookup(var.logging_configuration, "level", "OFF") != "OFF" ? [var.logging_configuration] : []
 
     content {
       include_execution_data = lookup(logging_configuration.value, "include_execution_data", null)
@@ -87,7 +87,7 @@ resource "aws_iam_role" "sfn" {
   }
 
   dynamic "inline_policy" {
-    for_each = lookup(var.logging_configuration, "level", "OFF") != "OFF" && var.type == "EXPRESS" ? [true] : []
+    for_each = lookup(var.logging_configuration, "level", "OFF") != "OFF" ? [true] : []
 
     content {
       name = "sfn-cloudwatch-policy"
