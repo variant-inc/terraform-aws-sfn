@@ -36,7 +36,7 @@
 | type | string | "STANDARD" | "EXPRESS" |  |
 | definition_filename | string | "state-machine.json" | "my-sfn.json" |  |
 | definition_variables | map(any) | {} | `see below` | works together with definition file template |
-| logging_configuration | any | {} | `see below` | supported only when `type` is `"EXPRESS"` |
+| logging_configuration | any | {} | `see below` |  |
 | enable_tracing | bool | false | true |  |
 
 ## Variable definitions
@@ -141,7 +141,6 @@ Default:
 
 ### logging_configuration
 Contains logging information.
-Supported only when `type` is `"EXPRESS"`.
 ```json
 "logging_configuration": {
   "level": "<OFF, ERROR, FATAL, ALL>",
